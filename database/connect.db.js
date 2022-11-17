@@ -16,9 +16,7 @@ module.exports = {
       if(err || !db) {
         return callback(err);
       }
-      
       dbConnection = db.db(process.env.MONGO_DB_NAME || "test");
-      
       console.log("Successfully connected to MongoDB.");
       return callback();
     });

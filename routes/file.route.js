@@ -8,14 +8,19 @@ const buffer = (req, res, next) => {
         buffer = new Buffer.from(chunk);
     });
     req.on("end", () => {
-            req.body.buffer = buffer;
+            req.files = {
+                buffer,
+                mimeType: req.headers['content-type'],
+                size: req.headers['content-length'],
+                fileName: req.params.filename || 'testFile'
+            }
             next();
         }
     );
 };
 
-router.get("/", fileController.getFile);
-router.post("/", buffer, fileController.postFile);
+router.get("/:filename", fileController.getFile);
+router.post("/:filename", buffer, fileController.postFile);
 router.delete('/', fileController.deleteFiles);
 router.get("/all", fileController.getAllFilesFromMongo);
 

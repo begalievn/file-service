@@ -12,8 +12,8 @@ class FileService {
     }
     
     
-    async getFile(query) {
-        const filename = query?.filename || null;
+    async getFile(filename) {
+        console.log("filename", filename);
         const result = await fileRepository.findFile(filename);
         if(result) {
             const readStream = fs.createReadStream(__dirname + `/../static/${filename}`);

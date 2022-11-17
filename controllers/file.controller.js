@@ -14,7 +14,8 @@ class FileController {
   
   async getFile(req, res) {
     try {
-      const result = await fileService.getFile(req.query);
+      console.log(req.params.filename);
+      const result = await fileService.getFile(req.params.filename);
       if(result) {
         return result.pipe(res);
       }
@@ -26,12 +27,8 @@ class FileController {
   
   async postFile(req, res) {
     try {
-      const data = {
-        buffer: req.body.buffer,
-        mimeType: req.headers['content-type'],
-        size: req.headers['content-length'],
-        fileName: req.query?.filename || null
-      }
+      const data = { ...req.files };
+      console.log("data", data);
       const result = await fileService.postFile(data);
       return res.send(result);
     } catch(e) {
