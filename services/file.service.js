@@ -1,6 +1,5 @@
-const fs = require('fs');
 const fileRepository = require('../database/file.repository');
-const { readFileAdapter, writeFileAdapter } = require('../lib/adapter');
+const { readFile, writeFile } = require('../lib/adapter');
 
 class FileService {
     constructor() {
@@ -13,19 +12,17 @@ class FileService {
     }
     
     async getFile(filename) {
-        console.log("filename", filename);
         const result = await fileRepository.findFile(filename);
         if(result) {
-            return readFileAdapter(filename);
+            return readFile(filename);
         }
         return null;
     }
     
     async postFile(data) {
-        
-        
         try {
-            writeFileAdapter(data.fileName, data.buffer);
+            const result = await writeFile(data.fileName, data.buffer);
+            console.log('result writeStream: ', result);
         } catch(e) {
             console.log("Error, file hasn't been written");
         }
