@@ -23,6 +23,8 @@ class FileService {
     }
     
     async postFile(data) {
+        
+        
         try {
             const writableStream = fs.createWriteStream(__dirname + `/../static/${data.fileName}`);
             writableStream.write(data.buffer);
