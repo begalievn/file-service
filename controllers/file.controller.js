@@ -12,16 +12,16 @@ class FileController {
     }
   }
   
-  async getFile(req, res) {
+  async getFile(req, res, next) {
     try {
-      console.log(req.params.filename);
       const result = await fileService.getFile(req.params.filename);
       if(result) {
         return result.pipe(res);
       }
       res.send(`There is no such a file`);
     } catch(e) {
-      res.status(500).json(e);
+      // res.status(500).json(e);
+      next(e);
     }
   }
   

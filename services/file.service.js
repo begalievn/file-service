@@ -7,16 +7,20 @@ class FileService {
     
     async getAllFiles() {
         const result = await fileRepository.findAllFiles();
-        console.log(result);
+        console.log("getAllFiles", result);
         return result;
     }
     
     async getFile(filename) {
-        const result = await fileRepository.findFile(filename);
-        if(result) {
-            return readFile(filename);
+        try {
+            const result = await fileRepository.findFile(filename);
+            if(result) {
+                return await readFile(filename);
+            }
+            return null;
+        } catch(e) {
+            throw new Error("Error while getting file");
         }
-        return null;
     }
     
     async postFile(data) {
