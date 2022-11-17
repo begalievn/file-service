@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
-const connectionString = `mongodb+srv://begaliev:12345@cluster0.mn9wz7o.mongodb.net/?retryWrites=true&w=majority`;
+const connectionString = process.env.MONGO_URI;
 
 const client = new MongoClient(connectionString, {
   useNewUrlParser: true,
@@ -16,7 +17,7 @@ module.exports = {
         return callback(err);
       }
       
-      dbConnection = db.db("test");
+      dbConnection = db.db(process.env.MONGO_DB_NAME || "test");
       
       console.log("Successfully connected to MongoDB.");
       return callback();
