@@ -38,18 +38,15 @@ class FileService {
         const fileAlreadyExists = await fileRepository.findFile(data.fileName);
         
         if(fileAlreadyExists?.filename) {
-            const result = await fileRepository.updateFile(data?.fileName, newFile);
-            return result;
+            return await fileRepository.updateFile(data?.fileName, newFile);
         }
-        const result = await fileRepository.insertFile(newFile);
-        return result;
+        return await fileRepository.insertFile(newFile);
     }
     
     async deleteFiles(query) {
         if(query.filename) {
             const filename = query.filename;
-            const result = await fileRepository.deleteFiles(filename);
-            return result;
+            return await fileRepository.deleteFiles(filename);
         }
         return `Provide filename`;
     }
