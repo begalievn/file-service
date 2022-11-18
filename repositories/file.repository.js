@@ -4,13 +4,13 @@ class FileRepository {
     
     constructor() {};
     
-    async findFile(filename) {
-        const result = await File.findOne({filename});
+    async findFile(query) {
+        const result = await File.findOne(query);
         return result;
     }
     
-    async findAllFiles() {
-        const result = await File.find();
+    async findAllFiles(query) {
+        const result = await File.find(query);
         return result;
     }
     
@@ -27,9 +27,9 @@ class FileRepository {
         return result;
     }
     
-    async findAndRemove(filename) {
+    async findAndRemove(query) {
         const result = await File.findOneAndUpdate(
-            { filename },
+            query,
             {
                 isDeleted: true
             },

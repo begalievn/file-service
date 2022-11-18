@@ -7,12 +7,12 @@ class FileService {
     }
     
     async getAllFiles() {
-        const result = await fileRepository.findAllFiles();
+        const result = await fileRepository.findAllFiles({});
         return result;
     }
     
     async getFile(filename) {
-        const result = await fileRepository.findFile(filename);
+        const result = await fileRepository.findFile({filename});
         if (!result) {
             throw new ApiError("File not found", 404);
         }
@@ -36,7 +36,7 @@ class FileService {
         return result;
     }
     
-    async removeFile(filename) {
+    async removeFile({filename}) {
         if (!filename) {
             return `Provide filename`;
         }
