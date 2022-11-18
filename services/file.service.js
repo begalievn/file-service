@@ -1,6 +1,6 @@
 const fileRepository = require('../repositories/file.repository');
 const {readFile, writeFile} = require('../lib/adapter');
-const NotFoundError = require('../custom-errors/not-found.error');
+const ApiError = require('../custom-errors/api-error.js');
 
 class FileService {
     constructor() {
@@ -14,7 +14,7 @@ class FileService {
     async getFile(filename) {
         const result = await fileRepository.findFile(filename);
         if (!result) {
-            throw new NotFoundError("File not found");
+            throw new ApiError("File not found", 404);
         }
         return await readFile(filename);
     }
