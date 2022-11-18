@@ -1,54 +1,44 @@
-const dbo = require('../database/connect.db');
+const File = require('../database/models/file.model');
 
 class FileRepository {
     
     constructor() {};
     
     async findFile(filename) {
-        const dbConnect = dbo.getDb();
-        const result = await dbConnect
-            .collection("file-service")
-            .findOne({filename});
+        const result = await File.findOne({filename});
         return result;
     }
     
     async findAllFiles() {
-        const dbConnect = dbo.getDb();
-        const result = await dbConnect
-            .collection("file-service")
-            .find({});
+        const result = await File.find();
         return result;
     }
     
-    async insertFile(newFile) {
-        const dbConnect = dbo.getDb();
-        const result = await dbConnect
-            .collection("file-service")
-            .insertOne(newFile);
+    async findAndUpdateOrInsert(newFile) {
+        const result = await File.findOneAndUpdate(
+            { filename: newFile.filename },
+            newFile,
+            {
+                new: true,
+                upsert: true,
+                rawResult: true
+            }
+        )
         return result;
     }
     
-    async updateFile(filename, newFile) {
-        const dbConnect = dbo.getDb();
-        const result = await dbConnect
-            .collection("file-service")
-            .updateOne(
-                { filename },
-                {
-                    $set: newFile
-                }
-            );
+    async findAndRemove(filename) {
+        const result = await File.findOneAndUpdate(
+            { filename },
+            {
+                isDeleted: true
+            },
+            {
+                new: true
+            }
+        );
         return result;
     }
-    
-    async deleteFiles(filename) {
-        const dbConnect = dbo.getDb();
-        const result = await dbConnect
-            .collection("file-service")
-            .deleteMany({filename});
-        return result;
-    }
-    
 }
 
 module.exports = new FileRepository();
